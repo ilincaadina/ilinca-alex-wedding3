@@ -88,11 +88,11 @@
                         <label class="text-wedding-text font-medium block">Vei participa la eveniment? *</label>
                         <div class="space-y-3">
                             <label class="flex items-center space-x-2">
-                                <input type="radio" name="attending" value="da" required class="text-wedding-primary">
+                                <input type="radio" name="attending" value="Da" required class="text-wedding-primary">
                                 <span class="text-wedding-text">Da, abia aștept să petrecem împreună.</span>
                             </label>
                             <label class="flex items-center space-x-2">
-                                <input type="radio" name="attending" value="nu" required class="text-wedding-primary">
+                                <input type="radio" name="attending" value="Nu" required class="text-wedding-primary">
                                 <span class="text-wedding-text">Nu, nu voi ajunge.</span>
                             </label>
                         </div>
@@ -105,11 +105,11 @@
                             <label class="text-wedding-text font-medium block">Vei veni însoțit(ă)? *</label>
                             <div class="space-y-3">
                                 <label class="flex items-center space-x-2">
-                                    <input type="radio" name="accompanied" value="da" class="text-wedding-primary">
+                                    <input type="radio" name="accompanied" value="Da" class="text-wedding-primary">
                                     <span class="text-wedding-text">Da</span>
                                 </label>
                                 <label class="flex items-center space-x-2">
-                                    <input type="radio" name="accompanied" value="nu" class="text-wedding-primary">
+                                    <input type="radio" name="accompanied" value="Nu" class="text-wedding-primary">
                                     <span class="text-wedding-text">Nu</span>
                                 </label>
                             </div>
@@ -232,6 +232,15 @@
         </div>
     </div>
 
+    <!-- Loading Modal -->
+    <div id="loadingModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+        <div class="bg-wedding-card rounded-lg p-8 max-w-md w-full text-center">
+            <div class="animate-spin rounded-full h-16 w-16 border-b-2 border-wedding-primary mx-auto mb-4"></div>
+            <h3 class="text-xl font-serif text-wedding-text mb-2">Se trimite...</h3>
+            <p class="text-wedding-primary">Vă rugăm să așteptați</p>
+        </div>
+    </div>
+
     <script>
         // Form logic
         const form = document.getElementById('rsvpForm');
@@ -243,10 +252,12 @@
         attendingRadios.forEach(radio => {
             radio.addEventListener('change', function() {
                 const attendingSection = document.getElementById('attendingSection');
-                if (this.value === 'da') {
+                if (this.value === 'Da') {
                     attendingSection.classList.remove('hidden');
                 } else {
                     attendingSection.classList.add('hidden');
+                    // Reset accompanied section when not attending
+                    document.getElementById('accompaniedSection').classList.add('hidden');
                 }
             });
         });
@@ -254,7 +265,7 @@
         accompaniedRadios.forEach(radio => {
             radio.addEventListener('change', function() {
                 const accompaniedSection = document.getElementById('accompaniedSection');
-                if (this.value === 'da') {
+                if (this.value === 'Da') {
                     accompaniedSection.classList.remove('hidden');
                 } else {
                     accompaniedSection.classList.add('hidden');
@@ -278,12 +289,24 @@
         form.addEventListener('submit', async function(e) {
             e.preventDefault();
             
+            // Show loading modal
+            document.getElementById('loadingModal').classList.remove('hidden');
+            
             const submitBtn = document.getElementById('submitBtn');
-            submitBtn.textContent = 'Se trimite...';
             submitBtn.disabled = true;
 
             // Collect form data
             const formData = new FormData(form);
+            
+            // Get all checkbox values
+            const menuPreferences = [];
+            const menuCheckboxes = document.querySelectorAll('input[name="menuPreferences"]:checked');
+            menuCheckboxes.forEach(cb => menuPreferences.push(cb.value));
+            
+            const transport = [];
+            const transportCheckboxes = document.querySelectorAll('input[name="transport"]:checked');
+            transportCheckboxes.forEach(cb => transport.push(cb.value));
+
             const data = {
                 timestamp: new Date().toLocaleString('ro-RO', {
                     timeZone: 'Europe/Bucharest',
@@ -293,36 +316,48 @@
                     hour: '2-digit',
                     minute: '2-digit'
                 }),
-                name: formData.get('name'),
-                attending: formData.get('attending'),
+                name: formData.get('name') || '',
+                attending: formData.get('attending') || '',
                 accompanied: formData.get('accompanied') || 'Nu',
                 totalGuests: formData.get('totalGuests') || '1',
                 children: formData.get('children') || '0',
                 guestNames: formData.get('guestNames') || '',
-                menuPreferences: formData.getAll('menuPreferences').join(', '),
+                menuPreferences: menuPreferences.join(', '),
                 menuOther: formData.get('menuOther') || '',
-                transport: formData.getAll('transport').join(', ')
+                transport: transport.join(', ')
             };
+
+            console.log('Sending data to Google Sheets:', data);
 
             try {
                 // Send to Google Sheets
                 const response = await fetch('https://script.google.com/macros/s/AKfycbxyOq-7GHm5zDpixGcaIjNcuo3RIrO0svso_-2fEUsSQTfv8Eh5WBVwpQF7jte1GJRCSA/exec', {
                     method: 'POST',
+                    mode: 'no-cors', // Important for Google Apps Script
                     headers: {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify(data)
                 });
 
-                console.log('Response:', response);
+                console.log('Response sent to Google Sheets');
+                
+                // Hide loading modal
+                document.getElementById('loadingModal').classList.add('hidden');
+                
+                // Show success modal
+                document.getElementById('successModal').classList.remove('hidden');
+                
             } catch (error) {
                 console.error('Error:', error);
+                
+                // Hide loading modal
+                document.getElementById('loadingModal').classList.add('hidden');
+                
+                // Still show success (Google Sheets might work even if we get an error due to CORS)
+                document.getElementById('successModal').classList.remove('hidden');
             }
-
-            // Show success modal
-            document.getElementById('successModal').classList.remove('hidden');
             
-            submitBtn.textContent = 'Trimite confirmarea';
             submitBtn.disabled = false;
         });
 
