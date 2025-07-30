@@ -35,38 +35,32 @@
             input, textarea, select { min-height: 44px; font-size: 16px; }
         }
 
-        /* Image loading fallback */
+        /* Image loading states */
         .image-container {
             position: relative;
-            background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+            overflow: hidden;
         }
         
-        .image-container::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 40px;
-            height: 40px;
-            border: 3px solid #6B7F4A;
-            border-top: 3px solid transparent;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
+        .image-loading {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
         }
         
-        .image-container img {
-            opacity: 0;
-            transition: opacity 0.3s ease;
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
         }
         
-        .image-container img.loaded {
-            opacity: 1;
-        }
-        
-        @keyframes spin {
-            0% { transform: translate(-50%, -50%) rotate(0deg); }
-            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        .image-error {
+            background: linear-gradient(135deg, #wedding-background, #wedding-accent/20);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #wedding-text;
+            font-size: 14px;
+            text-align: center;
+            padding: 20px;
         }
     </style>
 </head>
@@ -132,7 +126,7 @@
                         împreună o seară frumoasă, cu zâmbete, dans și voie bună.
                     </p>
                     <p class="text-wedding-text leading-relaxed mb-4">
-                        Pentru a ne putea organiza cât mai bine, te rugăm să completezi acest scurt formular până pe
+                        Pentru a ne putea organiza cât mai bine, te rugăm să completezi acest scurt formular până pe{" "}
                         <strong>5 septembrie</strong>. Ne va ajuta să știm dacă vei putea fi alături de noi, dacă vii
                         însoțit(ă), dacă ai nevoie de transport sau un meniu special.
                     </p>
@@ -184,19 +178,11 @@
                     </div>
                     <div class="relative">
                         <div class="image-container rounded-lg shadow-xl mx-auto w-full max-w-md h-96">
-                            <img src="https://github.com/ilincaadinamuntianu-1751/ilinca-alex-wedding3/raw/main/images/brasov-meeting.jpg" 
+                            <img src="https://drive.google.com/uc?export=view&id=1wqR5SJ24tc98X4QCxPohXuMC0Hlru2tW" 
                                  alt="Brașov - locul unde totul a început" 
-                                 class="rounded-lg shadow-xl mx-auto object-cover w-full max-w-md h-96"
-                                 onload="this.classList.add('loaded')"
-                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                            <div style="display:none;" class="w-full h-96 bg-gradient-to-br from-wedding-accent/20 to-wedding-secondary/20 rounded-lg flex items-center justify-center">
-                                <div class="text-center text-wedding-text">
-                                    <svg class="w-16 h-16 mx-auto mb-4 text-wedding-primary" fill="currentColor" viewBox="0 0 24 24">
-                                        <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
-                                    </svg>
-                                    <p class="font-medium">Brașov - Prima întâlnire</p>
-                                </div>
-                            </div>
+                                 class="rounded-lg shadow-xl mx-auto object-cover w-full h-96"
+                                 onload="this.parentElement.classList.remove('image-loading')"
+                                 onerror="this.parentElement.innerHTML='<div class=\'image-error h-96 rounded-lg\'><div><svg class=\'w-8 h-8 mb-2 mx-auto text-wedding-primary\' fill=\'currentColor\' viewBox=\'0 0 24 24\'><path d=\'M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z\'/></svg><p>Brașov - Prima întâlnire</p></div></div>'">
                         </div>
                         <div class="absolute -top-4 -right-4 w-24 h-24 bg-wedding-accent/30 rounded-full"></div>
                         <div class="absolute -bottom-4 -left-4 w-16 h-16 bg-wedding-secondary/30 rounded-full"></div>
@@ -207,19 +193,11 @@
                 <div class="grid md:grid-cols-2 gap-12 items-center">
                     <div class="relative md:order-1">
                         <div class="image-container rounded-lg shadow-xl mx-auto w-full max-w-md h-96">
-                            <img src="https://github.com/ilincaadinamuntianu-1751/ilinca-alex-wedding3/raw/main/images/proposal-boat.jpg" 
+                            <img src="https://drive.google.com/uc?export=view&id=1x8Ks8l9EX3_aXOqNKugNVgNHQvCWcJke" 
                                  alt="Cererea în căsătorie pe barcă" 
-                                 class="rounded-lg shadow-xl mx-auto object-cover w-full max-w-md h-96"
-                                 onload="this.classList.add('loaded')"
-                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                            <div style="display:none;" class="w-full h-96 bg-gradient-to-br from-wedding-accent/20 to-wedding-secondary/20 rounded-lg flex items-center justify-center">
-                                <div class="text-center text-wedding-text">
-                                    <svg class="w-16 h-16 mx-auto mb-4 text-wedding-primary" fill="currentColor" viewBox="0 0 24 24">
-                                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                                    </svg>
-                                    <p class="font-medium">Cererea pe barcă</p>
-                                </div>
-                            </div>
+                                 class="rounded-lg shadow-xl mx-auto object-cover w-full h-96"
+                                 onload="this.parentElement.classList.remove('image-loading')"
+                                 onerror="this.parentElement.innerHTML='<div class=\'image-error h-96 rounded-lg\'><div><svg class=\'w-8 h-8 mb-2 mx-auto text-wedding-primary\' fill=\'currentColor\' viewBox=\'0 0 24 24\'><path d=\'M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z\'/></svg><p>Cererea pe barcă</p></div></div>'">
                         </div>
                         <div class="absolute -top-4 -left-4 w-24 h-24 bg-wedding-accent/30 rounded-full"></div>
                         <div class="absolute -bottom-4 -right-4 w-16 h-16 bg-wedding-secondary/30 rounded-full"></div>
@@ -333,20 +311,12 @@
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <!-- Logodna -->
                     <div class="relative group overflow-hidden rounded-lg shadow-lg">
-                        <div class="image-container w-full h-80">
-                            <img src="https://github.com/ilincaadinamuntianu-1751/ilinca-alex-wedding3/raw/main/images/engagement-ring-boat.jpeg" 
+                        <div class="image-container image-loading">
+                            <img src="https://drive.google.com/uc?export=view&id=1E_lvYh7F1TQ2tF4VKQz-Hu2N0DKmGszX" 
                                  alt="Inelul de logodnă pe barcă" 
                                  class="w-full h-80 object-cover transition-transform group-hover:scale-110"
-                                 onload="this.classList.add('loaded')"
-                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                            <div style="display:none;" class="w-full h-80 bg-gradient-to-br from-wedding-accent/20 to-wedding-secondary/20 flex items-center justify-center">
-                                <div class="text-center text-wedding-text">
-                                    <svg class="w-12 h-12 mx-auto mb-2 text-wedding-primary" fill="currentColor" viewBox="0 0 24 24">
-                                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                                    </svg>
-                                    <p class="font-medium">Logodna</p>
-                                </div>
-                            </div>
+                                 onload="this.parentElement.classList.remove('image-loading')"
+                                 onerror="this.parentElement.innerHTML='<div class=\'image-error h-80\'><div><svg class=\'w-8 h-8 mb-2 mx-auto text-wedding-primary\' fill=\'currentColor\' viewBox=\'0 0 24 24\'><path d=\'M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z\'/></svg><p>Inelul de logodnă</p></div></div>'">
                         </div>
                         <div class="absolute inset-0 bg-wedding-primary/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
                         <div class="absolute bottom-4 left-4 text-wedding-card">
@@ -356,20 +326,12 @@
 
                     <!-- Călătoriile - Mediterana 1 -->
                     <div class="relative group overflow-hidden rounded-lg shadow-lg">
-                        <div class="image-container w-full h-80">
-                            <img src="https://github.com/ilincaadinamuntianu-1751/ilinca-alex-wedding3/raw/main/images/travel-mediterranean-1.jpeg" 
+                        <div class="image-container image-loading">
+                            <img src="https://drive.google.com/uc?export=view&id=1vD7TSmpMcKbDXiiE2x0BVT4AzG9TkQfl" 
                                  alt="Călătorie în Mediterana" 
                                  class="w-full h-80 object-cover transition-transform group-hover:scale-110"
-                                 onload="this.classList.add('loaded')"
-                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                            <div style="display:none;" class="w-full h-80 bg-gradient-to-br from-wedding-accent/20 to-wedding-secondary/20 flex items-center justify-center">
-                                <div class="text-center text-wedding-text">
-                                    <svg class="w-12 h-12 mx-auto mb-2 text-wedding-primary" fill="currentColor" viewBox="0 0 24 24">
-                                        <path d="M14,6L10.25,11L13.1,14.8L11.5,16C9.81,13.75 7,10 7,10L1,18H23L14,6Z"/>
-                                    </svg>
-                                    <p class="font-medium">Călătoriile noastre</p>
-                                </div>
-                            </div>
+                                 onload="this.parentElement.classList.remove('image-loading')"
+                                 onerror="this.parentElement.innerHTML='<div class=\'image-error h-80\'><div><svg class=\'w-8 h-8 mb-2 mx-auto text-wedding-primary\' fill=\'currentColor\' viewBox=\'0 0 24 24\'><path d=\'M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z\'/></svg><p>Călătorie Mediterana</p></div></div>'">
                         </div>
                         <div class="absolute inset-0 bg-wedding-primary/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
                         <div class="absolute bottom-4 left-4 text-wedding-card">
@@ -379,20 +341,12 @@
 
                     <!-- Călătoriile - Mediterana 2 -->
                     <div class="relative group overflow-hidden rounded-lg shadow-lg">
-                        <div class="image-container w-full h-80">
-                            <img src="https://github.com/ilincaadinamuntianu-1751/ilinca-alex-wedding3/raw/main/images/travel-mediterranean-2.jpeg" 
+                        <div class="image-container image-loading">
+                            <img src="https://drive.google.com/uc?export=view&id=1-_zu2IvveX_jiNFAroaY81GxRGQ3feY1" 
                                  alt="Călătorie în Mediterana" 
                                  class="w-full h-80 object-cover transition-transform group-hover:scale-110"
-                                 onload="this.classList.add('loaded')"
-                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                            <div style="display:none;" class="w-full h-80 bg-gradient-to-br from-wedding-accent/20 to-wedding-secondary/20 flex items-center justify-center">
-                                <div class="text-center text-wedding-text">
-                                    <svg class="w-12 h-12 mx-auto mb-2 text-wedding-primary" fill="currentColor" viewBox="0 0 24 24">
-                                        <path d="M14,6L10.25,11L13.1,14.8L11.5,16C9.81,13.75 7,10 7,10L1,18H23L14,6Z"/>
-                                    </svg>
-                                    <p class="font-medium">Călătoriile noastre</p>
-                                </div>
-                            </div>
+                                 onload="this.parentElement.classList.remove('image-loading')"
+                                 onerror="this.parentElement.innerHTML='<div class=\'image-error h-80\'><div><svg class=\'w-8 h-8 mb-2 mx-auto text-wedding-primary\' fill=\'currentColor\' viewBox=\'0 0 24 24\'><path d=\'M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z\'/></svg><p>Călătorie Mediterana</p></div></div>'">
                         </div>
                         <div class="absolute inset-0 bg-wedding-primary/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
                         <div class="absolute bottom-4 left-4 text-wedding-card">
@@ -402,20 +356,12 @@
 
                     <!-- Cununie -->
                     <div class="relative group overflow-hidden rounded-lg shadow-lg md:col-span-3">
-                        <div class="image-container w-full h-64">
-                            <img src="https://github.com/ilincaadinamuntianu-1751/ilinca-alex-wedding3/raw/main/images/religious-ceremony.jpeg" 
+                        <div class="image-container image-loading">
+                            <img src="https://drive.google.com/uc?export=view&id=1j3vAJIZpawDz38fxOPizjQv9q8ZQNnQX" 
                                  alt="Ceremonia religioasă" 
                                  class="w-full h-64 object-cover object-left transition-transform group-hover:scale-110"
-                                 onload="this.classList.add('loaded')"
-                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                            <div style="display:none;" class="w-full h-64 bg-gradient-to-br from-wedding-accent/20 to-wedding-secondary/20 flex items-center justify-center">
-                                <div class="text-center text-wedding-text">
-                                    <svg class="w-16 h-16 mx-auto mb-4 text-wedding-primary" fill="currentColor" viewBox="0 0 24 24">
-                                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                                    </svg>
-                                    <p class="font-medium text-lg">Cununie</p>
-                                </div>
-                            </div>
+                                 onload="this.parentElement.classList.remove('image-loading')"
+                                 onerror="this.parentElement.innerHTML='<div class=\'image-error h-64\'><div><svg class=\'w-8 h-8 mb-2 mx-auto text-wedding-primary\' fill=\'currentColor\' viewBox=\'0 0 24 24\'><path d=\'M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z\'/></svg><p>Ceremonia religioasă</p></div></div>'">
                         </div>
                         <div class="absolute inset-0 bg-wedding-primary/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
                         <div class="absolute bottom-4 left-4 text-wedding-card">
@@ -476,5 +422,15 @@
             <p class="text-wedding-accent text-sm mt-2">12 Octombrie 2025 • București, România</p>
         </div>
     </footer>
+
+    <script>
+        // Add loading class to all image containers on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const imageContainers = document.querySelectorAll('.image-container');
+            imageContainers.forEach(container => {
+                container.classList.add('image-loading');
+            });
+        });
+    </script>
 </body>
 </html>
